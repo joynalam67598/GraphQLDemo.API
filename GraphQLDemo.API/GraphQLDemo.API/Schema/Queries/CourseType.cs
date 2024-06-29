@@ -1,15 +1,11 @@
-﻿using HotChocolate;
+﻿using GraphQLDemo.API.Models;
+using HotChocolate;
 using System;
 using System.Collections.Generic;
 
 namespace GraphQLDemo.API.Schema.Queries
 {
-    public enum Subject
-    {
-        Mathmatics,
-        Science,
-        History
-    }
+    
 
     public class CourseType
     {        
@@ -17,6 +13,7 @@ namespace GraphQLDemo.API.Schema.Queries
         public string Name { get; set; }
         public IEnumerable<StudentType> Students { get; set; }
         public Subject Subject { get; set; }
+
         [GraphQLNonNullType]
         public InstructorType Instructor { get; set; }
 
