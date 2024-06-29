@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "QOUantGa8ZuElecMgSQR1TzkMVH+PFPut6hPurZRmDtyGxwSSw4qwNghAeKGeRWcVA1qHp6lcUYbJs6bhDjRSw==",
+  "dgSpecHash": "kx26zSft3IS/A9lmJozbp4AuXBVu3pEdrZVeFo0BOCKCwXQvz2IEea6ahphoNxOgLlqohJoSi/plZx16A1nPlQ==",
   "success": true,
   "projectFilePath": "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Joynal\\.nuget\\packages\\bogus\\35.5.1\\bogus.35.5.1.nupkg.sha512",
     "C:\\Users\\Joynal\\.nuget\\packages\\greendonut\\11.3.1\\greendonut.11.3.1.nupkg.sha512",
     "C:\\Users\\Joynal\\.nuget\\packages\\hotchocolate\\11.3.1\\hotchocolate.11.3.1.nupkg.sha512",
     "C:\\Users\\Joynal\\.nuget\\packages\\hotchocolate.abstractions\\11.3.1\\hotchocolate.abstractions.11.3.1.nupkg.sha512",
