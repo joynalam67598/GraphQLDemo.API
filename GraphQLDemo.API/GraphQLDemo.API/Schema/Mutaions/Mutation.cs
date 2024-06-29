@@ -1,5 +1,7 @@
 ﻿using GraphQLDemo.API.Schema.Mutaions;
+using GraphQLDemo.API.Schema.Subscriptions;
 using HotChocolate;
+using HotChocolate.Subscriptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +31,13 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
          *      }
          * }
          * 
+         * subscription{
+         *      courseCreated{
+         *        // data field we want to see.
+         *        Id
+         *        Name
+         *      }
+         * }
          * 
          * result format:
          * "data":{
@@ -40,9 +49,9 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
          * 
          */
 
-        public CourseResult CreateCourse(CourseInputType courseInputType)
+        public async Task<CourseResult> CreateCourse(CourseInputType courseInputType, [Service] ITopicEventSender topicEventSender)
         {
-            CourseResult newCourseType = new CourseResult()
+            CourseResult course = new CourseResult()
             {
                 Id = Guid.NewGuid(),
                 Name = courseInputType.Name,
@@ -50,9 +59,13 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
                 InstructorId =  courseInputType.InstructorId
             };
 
-            _courses.Add(newCourseType);
+            _courses.Add(course);
 
-            return newCourseType;
+            // publishing/raising the event to a topic.
+            // topic is the Name of the subscription method.
+            await topicEventSender.SendAsync(nameof(Subscription.CourseCreated), course);
+
+            return course;
         }
 
         /*query
