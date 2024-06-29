@@ -80,5 +80,17 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
             return course;
         }
 
+        /*query
+         * mutation{
+         *      deleteCourse(id: Guid)
+         * }
+         * 
+         */
+
+        public bool DeleteCourse(Guid coruseId)
+        {
+            return _courses.RemoveAll(c => c.Id == coruseId) >= 1;
+        }
+
     }
 }
