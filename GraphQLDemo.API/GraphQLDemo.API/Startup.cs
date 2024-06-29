@@ -1,13 +1,9 @@
-using GraphQLDemo.API.Schema;
+using GraphQLDemo.API.Schema.Queries;
+using GraphQLDemo.API.Schema.Queries.Mutaions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GraphQLDemo.API
 {
@@ -26,7 +22,9 @@ namespace GraphQLDemo.API
             // if AddGraphQLServer is not available after installing updated version of the package then see which
             // version of the package support the dot net verstion you are using.
 
-            services.AddGraphQLServer().AddQueryType<Query>();
+            services.AddGraphQLServer()
+                .AddQueryType<Query>()
+                .AddMutationType<Mutation>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GraphQLDemo.API.Schema
+namespace GraphQLDemo.API.Schema.Queries
 {
     public enum Subject
     {
@@ -19,5 +19,10 @@ namespace GraphQLDemo.API.Schema
         public Subject Subject { get; set; }
         [GraphQLNonNullType]
         public InstructorType Instructor { get; set; }
+
+        public string Description()
+        {
+            return $"{Name}: This is a course.";
+        }
     }
 }
