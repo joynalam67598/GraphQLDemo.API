@@ -1,8 +1,11 @@
 ﻿using GraphQLDemo.API.Schema.Mutaions;
+using GraphQLDemo.API.Schema.Subscriptions;
 using HotChocolate;
+using HotChocolate.Subscriptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GraphQLDemo.API.Schema.Queries.Mutaions
 {
@@ -29,6 +32,13 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
          *      }
          * }
          * 
+         * subscription{
+         *      courseCreated{
+         *        // data field we want to see.
+         *        Id
+         *        Name
+         *      }
+         * }
          * 
          * result format:
          * "data":{
@@ -40,9 +50,9 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
          * 
          */
 
-        public CourseResult CreateCourse(CourseInputType courseInputType)
+        public async Task<CourseResult> CreateCourse(CourseInputType courseInputType, [Service] ITopicEventSender topicEventSender)
         {
-            CourseResult newCourseType = new CourseResult()
+            CourseResult course = new CourseResult()
             {
                 Id = Guid.NewGuid(),
                 Name = courseInputType.Name,
@@ -50,9 +60,13 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
                 InstructorId =  courseInputType.InstructorId
             };
 
-            _courses.Add(newCourseType);
+            _courses.Add(course);
 
-            return newCourseType;
+            // publishing/raising the event to a topic.
+            // topic is the Name of the subscription method.
+            await topicEventSender.SendAsync(nameof(Subscription.CourseCreated), course);
+
+            return course;
         }
 
         /*query
@@ -68,7 +82,7 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
          */
 
 
-        public CourseResult UpdateCourse(Guid courseId, CourseInputType courseInputType)
+        public CourseResult UpdateCourse(Guid courseId, CourseInputType courseInputType, [Service] ITopicEventSender topicEventSender)
         {
             CourseResult course = _courses.FirstOrDefault(c => c.Id == courseId);
 
@@ -80,6 +94,14 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
             course.Name = courseInputType.Name;
             course.Subject = courseInputType.Subject;  
             course.InstructorId = courseInputType.InstructorId;
+
+
+            // we will raise the event for a specific course thats we can't use method name as topic we need to use
+            // Custome topic.
+
+            string updatedCourseTopic = $"{courseId}_{nameof(Subscription.CourseUpdated)}";
+
+            await topicEventSender.SendAsync(nameof(updatedCourseTopic), course);
 
             return course;
         }
