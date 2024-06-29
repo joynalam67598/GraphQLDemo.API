@@ -31,6 +31,7 @@
     ".NETCoreApp,Version=v3.1": {
       "GraphQLDemo.API/1.0.0": {
         "dependencies": {
+          "Bogus": "35.5.1",
           "HotChocolate.AspNetCore": "11.3.1",
           "Microsoft.AspNetCore.Antiforgery": "3.1.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "3.1.0.0",
@@ -314,6 +315,17 @@
         },
         "compile": {
           "GraphQLDemo.API.dll": {}
+        }
+      },
+      "Bogus/35.5.1": {
+        "runtime": {
+          "lib/netstandard2.0/Bogus.dll": {
+            "assemblyVersion": "35.5.1.0",
+            "fileVersion": "35.5.1.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Bogus.dll": {}
         }
       },
       "GreenDonut/11.3.1": {
@@ -2398,6 +2410,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Bogus/35.5.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GBp2peww04szEJ0GlBlzCYilFDaSkL7Ja4m37YeTRjC/mgoiZnUuifmgUxVD/oLU2MC1uoXfQYK91doGp7Zkpg==",
+      "path": "bogus/35.5.1",
+      "hashPath": "bogus.35.5.1.nupkg.sha512"
     },
     "GreenDonut/11.3.1": {
       "type": "package",
