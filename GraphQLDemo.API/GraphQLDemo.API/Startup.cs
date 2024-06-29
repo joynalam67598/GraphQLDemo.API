@@ -1,8 +1,11 @@
 using GraphQLDemo.API.Schema.Queries;
 using GraphQLDemo.API.Schema.Queries.Mutaions;
 using GraphQLDemo.API.Schema.Subscriptions;
+using GraphQLDemo.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -10,6 +13,14 @@ namespace GraphQLDemo.API
 {
     public class Startup
     {
+        private readonly IConfiguration _congifuration;
+
+        public Startup(IConfiguration configuration)
+        {
+            _congifuration = configuration;
+        }
+
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -30,6 +41,11 @@ namespace GraphQLDemo.API
 
             // subscription provider -> give a place where hotchocolate can manage the event.
             services.AddInMemorySubscriptions();
+
+
+            var connectionString = _congifuration.GetConnectionString("default");
+            services.AddPooledDbContextFactory<SchoolDBContext>(sbd => sbd.UseSqlite(connectionString));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -82,7 +82,7 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
          */
 
 
-        public CourseResult UpdateCourse(Guid courseId, CourseInputType courseInputType, [Service] ITopicEventSender topicEventSender)
+        public async Task<CourseResult> UpdateCourse(Guid courseId, CourseInputType courseInputType, [Service] ITopicEventSender topicEventSender)
         {
             CourseResult course = _courses.FirstOrDefault(c => c.Id == courseId);
 
