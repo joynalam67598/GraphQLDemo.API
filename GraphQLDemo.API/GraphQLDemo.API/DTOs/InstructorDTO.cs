@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 
 namespace GraphQLDemo.API.DTOs
 {
@@ -9,6 +10,6 @@ namespace GraphQLDemo.API.DTOs
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public double Salary { get; set; }
-        
+        public IEnumerable<CourseDTO> Courses { get; set; }
     }
 }

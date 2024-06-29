@@ -86,7 +86,7 @@ namespace GraphQLDemo.API.Migrations
             modelBuilder.Entity("GraphQLDemo.API.DTOs.CourseDTO", b =>
                 {
                     b.HasOne("GraphQLDemo.API.DTOs.InstructorDTO", "Instructor")
-                        .WithMany()
+                        .WithMany("Courses")
                         .HasForeignKey("InstructorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -104,6 +104,11 @@ namespace GraphQLDemo.API.Migrations
             modelBuilder.Entity("GraphQLDemo.API.DTOs.CourseDTO", b =>
                 {
                     b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("GraphQLDemo.API.DTOs.InstructorDTO", b =>
+                {
+                    b.Navigation("Courses");
                 });
 #pragma warning restore 612, 618
         }

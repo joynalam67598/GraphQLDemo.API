@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GraphQLDemo.API.Migrations
 {
     [DbContext(typeof(SchoolDBContext))]
-    [Migration("20240629172916_Initial")]
+    [Migration("20240629175744_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,7 +88,7 @@ namespace GraphQLDemo.API.Migrations
             modelBuilder.Entity("GraphQLDemo.API.DTOs.CourseDTO", b =>
                 {
                     b.HasOne("GraphQLDemo.API.DTOs.InstructorDTO", "Instructor")
-                        .WithMany()
+                        .WithMany("Courses")
                         .HasForeignKey("InstructorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -106,6 +106,11 @@ namespace GraphQLDemo.API.Migrations
             modelBuilder.Entity("GraphQLDemo.API.DTOs.CourseDTO", b =>
                 {
                     b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("GraphQLDemo.API.DTOs.InstructorDTO", b =>
+                {
+                    b.Navigation("Courses");
                 });
 #pragma warning restore 612, 618
         }
