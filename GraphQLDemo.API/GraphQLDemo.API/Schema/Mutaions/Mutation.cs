@@ -1,6 +1,8 @@
 ﻿using GraphQLDemo.API.Schema.Mutaions;
+using HotChocolate;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GraphQLDemo.API.Schema.Queries.Mutaions
 {
@@ -24,7 +26,7 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
          * }
          * 
          * 
-         * result:
+         * result format:
          * "data":{
          *      "createCourses":{
          *          "id": ---,
@@ -48,5 +50,35 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
 
             return newCourseType;
         }
+
+        /*query
+         * mutation{
+         *      updateCourse(id: Guid, name: "Chemistry", subject: SCIENCE, instructiorId: Guid){
+         *        // data field we want to see.
+         *        Id
+         *        Name
+         *        subject
+         *      }
+         * }
+         * 
+         */
+
+
+        public CourseResult UpdateCourse(Guid coruseId, string name, Subject subject, Guid instructorId)
+        {
+            CourseResult course = _courses.FirstOrDefault(c => c.Id == coruseId);
+
+            if (course == null)
+            {
+                throw new GraphQLException(new Error("Course not found.", "COURSE_NOT_FOUND"));
+            }
+
+            course.Name = name;
+            course.Subject = subject;  
+            course.InstructorId = instructorId;
+
+            return course;
+        }
+
     }
 }
