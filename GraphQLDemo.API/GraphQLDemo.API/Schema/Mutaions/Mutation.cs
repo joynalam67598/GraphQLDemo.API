@@ -5,6 +5,7 @@ using HotChocolate.Subscriptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GraphQLDemo.API.Schema.Queries.Mutaions
 {
@@ -81,7 +82,7 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
          */
 
 
-        public CourseResult UpdateCourse(Guid courseId, CourseInputType courseInputType)
+        public CourseResult UpdateCourse(Guid courseId, CourseInputType courseInputType, [Service] ITopicEventSender topicEventSender)
         {
             CourseResult course = _courses.FirstOrDefault(c => c.Id == courseId);
 
@@ -93,6 +94,14 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
             course.Name = courseInputType.Name;
             course.Subject = courseInputType.Subject;  
             course.InstructorId = courseInputType.InstructorId;
+
+
+            // we will raise the event for a specific course thats we can't use method name as topic we need to use
+            // Custome topic.
+
+            string updatedCourseTopic = $"{courseId}_{nameof(Subscription.CourseUpdated)}";
+
+            await topicEventSender.SendAsync(nameof(updatedCourseTopic), course);
 
             return course;
         }
