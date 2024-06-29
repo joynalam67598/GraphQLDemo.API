@@ -18,7 +18,11 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
         /* execute
          * 
          * mutation{
-         *      createCourse(name: "Algorithms", subject: MATHMATICS, instructiorId: Guid){
+         *      createCourse(courseInput: {
+         *          name: "Algorithms",
+         *          subject: MATHMATICS,
+         *          instructiorId: Guid
+         *      }){
          *        // data field we want to see.
          *        Id
          *        Name
@@ -36,14 +40,14 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
          * 
          */
 
-        public CourseResult CreateCourse(string name, Subject subject, Guid instructorId)
+        public CourseResult CreateCourse(CourseInputType courseInputType)
         {
             CourseResult newCourseType = new CourseResult()
             {
                 Id = Guid.NewGuid(),
-                Name = name,
-                Subject = subject,
-                InstructorId =  instructorId
+                Name = courseInputType.Name,
+                Subject = courseInputType.Subject,
+                InstructorId =  courseInputType.InstructorId
             };
 
             _courses.Add(newCourseType);
@@ -53,7 +57,7 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
 
         /*query
          * mutation{
-         *      updateCourse(id: Guid, name: "Chemistry", subject: SCIENCE, instructiorId: Guid){
+         *      updateCourse(id: Guid, courseInput: { name: "Chemistry", subject: SCIENCE, instructiorId: Guid }){
          *        // data field we want to see.
          *        Id
          *        Name
@@ -64,18 +68,18 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
          */
 
 
-        public CourseResult UpdateCourse(Guid coruseId, string name, Subject subject, Guid instructorId)
+        public CourseResult UpdateCourse(Guid courseId, CourseInputType courseInputType)
         {
-            CourseResult course = _courses.FirstOrDefault(c => c.Id == coruseId);
+            CourseResult course = _courses.FirstOrDefault(c => c.Id == courseId);
 
             if (course == null)
             {
                 throw new GraphQLException(new Error("Course not found.", "COURSE_NOT_FOUND"));
             }
 
-            course.Name = name;
-            course.Subject = subject;  
-            course.InstructorId = instructorId;
+            course.Name = courseInputType.Name;
+            course.Subject = courseInputType.Subject;  
+            course.InstructorId = courseInputType.InstructorId;
 
             return course;
         }
