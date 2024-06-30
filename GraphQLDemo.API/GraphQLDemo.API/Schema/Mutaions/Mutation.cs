@@ -1,5 +1,7 @@
-﻿using GraphQLDemo.API.Schema.Mutaions;
+﻿using GraphQLDemo.API.DTOs;
+using GraphQLDemo.API.Schema.Mutaions;
 using GraphQLDemo.API.Schema.Subscriptions;
+using GraphQLDemo.API.Services.Courses;
 using HotChocolate;
 using HotChocolate.Subscriptions;
 using System;
@@ -11,56 +13,31 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
 {
     public class Mutation
     {
-        private readonly List<CourseResult> _courses;
+        private readonly CoursesRepository _coursesRepository;
 
-        public Mutation()
+        public Mutation(CoursesRepository coursesRepository)
         {
-            _courses = new List<CourseResult>();
+            _coursesRepository = coursesRepository;
         }
-
-        /* execute
-         * 
-         * mutation{
-         *      createCourse(courseInput: {
-         *          name: "Algorithms",
-         *          subject: MATHMATICS,
-         *          instructiorId: Guid
-         *      }){
-         *        // data field we want to see.
-         *        Id
-         *        Name
-         *      }
-         * }
-         * 
-         * subscription{
-         *      courseCreated{
-         *        // data field we want to see.
-         *        Id
-         *        Name
-         *      }
-         * }
-         * 
-         * result format:
-         * "data":{
-         *      "createCourses":{
-         *          "id": ---,
-         *          "name": "",
-         *      }
-         * } 
-         * 
-         */
 
         public async Task<CourseResult> CreateCourse(CourseInputType courseInputType, [Service] ITopicEventSender topicEventSender)
         {
-            CourseResult course = new CourseResult()
+            CourseDTO courseDTO = new CourseDTO()
             {
-                Id = Guid.NewGuid(),
                 Name = courseInputType.Name,
                 Subject = courseInputType.Subject,
-                InstructorId =  courseInputType.InstructorId
+                InstructorId = courseInputType.InstructorId
             };
 
-            _courses.Add(course);
+            courseDTO = await _coursesRepository.Create(courseDTO);
+
+            CourseResult course = new CourseResult()
+            {
+                Id = courseDTO.Id,
+                Name = courseDTO.Name,
+                Subject = courseDTO.Subject,
+                InstructorId = courseDTO.InstructorId
+            };
 
             // publishing/raising the event to a topic.
             // topic is the Name of the subscription method.
@@ -69,35 +46,28 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
             return course;
         }
 
-        /*query
-         * mutation{
-         *      updateCourse(id: Guid, courseInput: { name: "Chemistry", subject: SCIENCE, instructiorId: Guid }){
-         *        // data field we want to see.
-         *        Id
-         *        Name
-         *        subject
-         *      }
-         * }
-         * 
-         */
-
-
         public async Task<CourseResult> UpdateCourse(Guid courseId, CourseInputType courseInputType, [Service] ITopicEventSender topicEventSender)
         {
-            CourseResult course = _courses.FirstOrDefault(c => c.Id == courseId);
+            var courseDTO = await _coursesRepository.GetCourseById(courseId);
 
-            if (course == null)
+            if (courseDTO == null)
             {
                 throw new GraphQLException(new Error("Course not found.", "COURSE_NOT_FOUND"));
             }
 
-            course.Name = courseInputType.Name;
-            course.Subject = courseInputType.Subject;  
-            course.InstructorId = courseInputType.InstructorId;
+            courseDTO.Name = courseInputType.Name;
+            courseDTO.Subject = courseInputType.Subject;
+            courseDTO.InstructorId = courseInputType.InstructorId;
 
+            courseDTO = await _coursesRepository.Update(courseDTO);
 
-            // we will raise the event for a specific course thats we can't use method name as topic we need to use
-            // Custome topic.
+            CourseResult course = new CourseResult()
+            {
+                Id = courseDTO.Id,
+                Name = courseDTO.Name,
+                Subject = courseDTO.Subject,
+                InstructorId = courseDTO.InstructorId
+            };
 
             string updatedCourseTopic = $"{courseId}_{nameof(Subscription.CourseUpdated)}";
 
@@ -106,16 +76,16 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
             return course;
         }
 
-        /*query
-         * mutation{
-         *      deleteCourse(id: Guid)
-         * }
-         * 
-         */
-
-        public bool DeleteCourse(Guid coruseId)
+        public async Task<bool> DeleteCourse(Guid coruseId)
         {
-            return _courses.RemoveAll(c => c.Id == coruseId) >= 1;
+            try
+            {
+                return await _coursesRepository.Delete(coruseId);
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }            
         }
 
     }
