@@ -1,5 +1,7 @@
 GraphQL in Dot Net Core.
 
-In GraphQL we resolve N+1 problem we use data loader.
+Data Loader: 
 
-N + 1 => we first we perform a query then every item in the list we perform N query.
+In GraphQL we resolve the N+1 problem by using a data loader.
+
+N + 1 => we perform a query; for every item in the list, we perform 'N' query.
