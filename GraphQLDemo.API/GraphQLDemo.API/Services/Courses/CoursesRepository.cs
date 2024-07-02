@@ -33,8 +33,6 @@ namespace GraphQLDemo.API.Services.Courses
             using (SchoolDBContext contex = _dBContexFactory.CreateDbContext())
             {
                 var course = await contex.Courses
-                    .Include(c => c.Instructor)
-                    .Include(c => c.Students)
                     .FirstOrDefaultAsync(c => c.Id == courseId);
                 return course;
             }
@@ -55,10 +53,7 @@ namespace GraphQLDemo.API.Services.Courses
         {
             using (SchoolDBContext contex = _dBContexFactory.CreateDbContext())
             {
-                return await contex.Courses
-                    .Include(c => c.Instructor)
-                    .Include(c => c.Students)
-                    .ToListAsync();
+                return await contex.Courses.ToListAsync();
             }
         }
 
