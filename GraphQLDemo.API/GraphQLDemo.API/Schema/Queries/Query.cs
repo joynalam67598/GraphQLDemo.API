@@ -27,13 +27,7 @@ namespace GraphQLDemo.API.Schema.Queries
                 Id = c.Id,
                 Name = c.Name,
                 Subject = c.Subject,
-                Instructor = new InstructorType()
-                {
-                    Id = c.InstructorId,
-                    FirstName = c.Instructor.FirstName,
-                    LastName = c.Instructor.LastName,
-                    Salary = c.Instructor.Salary
-                }
+                InstructorId = c.InstructorId
             });
         }
 
@@ -46,13 +40,8 @@ namespace GraphQLDemo.API.Schema.Queries
                 Id = courseDTO.Id,
                 Name = courseDTO.Name,
                 Subject = courseDTO.Subject,
-                Instructor = new InstructorType()
-                {
-                    Id = courseDTO.InstructorId,
-                    FirstName = courseDTO.Instructor.FirstName,
-                    LastName = courseDTO.Instructor.LastName,
-                    Salary = courseDTO.Instructor.Salary
-                }
+                InstructorId = courseDTO.InstructorId
+                
             };
         }
 
