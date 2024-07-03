@@ -2,6 +2,7 @@
 using GraphQLDemo.API.Models;
 using GraphQLDemo.API.Services.Courses;
 using HotChocolate;
+using HotChocolate.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,24 @@ namespace GraphQLDemo.API.Schema.Queries
             _courseRepository = courseRepository;
         }
 
-        // Resolver
+        /*
+         * GetCourses(first: 3, after: -> weher we want to start, before: -> until){
+         *      edges { -> courses data.
+         *          node { -> individual courses.
+         *              id
+         *              name
+         *              subject
+         *              instructor{}
+         *          }
+         *          cursor -> specify the starting of the pasination
+         *      }
+         *      pageInfo{
+         *          endCursor
+         *      }
+         *  }
+         */
+
+        [UsePaging] /* enable pagination */
         public async Task<IEnumerable<CourseType>> GetCourses()
         {
             var CourseDTOs = await _courseRepository.GetAllCourse();
