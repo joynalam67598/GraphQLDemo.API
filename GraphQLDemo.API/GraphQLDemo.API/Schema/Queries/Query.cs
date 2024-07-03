@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using GraphQLDemo.API.Models;
+using GraphQLDemo.API.Schema.Filters;
 using GraphQLDemo.API.Services;
 using GraphQLDemo.API.Services.Courses;
 using HotChocolate;
@@ -92,7 +93,7 @@ namespace GraphQLDemo.API.Schema.Queries
         // order of the bellow attribute matter
         [UseDbContext(typeof(SchoolDBContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)] /* enable pagination */
-        [UseFiltering]
+        [UseFiltering(typeof(CourseFilterType))]
         public async Task<IQueryable<CourseType>> GetPaninatedCourses([ScopedService] SchoolDBContext contex)
         {
             var CourseDTOs = await _courseRepository.GetAllCourse();
