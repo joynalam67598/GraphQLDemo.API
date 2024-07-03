@@ -19,8 +19,9 @@ namespace GraphQLDemo.API.Schema.Queries
         {
             _courseRepository = courseRepository;
         }
-
-        /*
+        
+        /*pagination query
+         * 
          * GetCourses(first: 3, after: -> weher we want to start, before: -> until){
          *      edges { -> courses data.
          *          node { -> individual courses.
@@ -55,8 +56,43 @@ namespace GraphQLDemo.API.Schema.Queries
         // apply pagination in db query. for this we don't need to pass the size to repository to use in take()
         // if we return querible to hotchocolate it do this for us.
 
+
+        /* filtering query
+         * 
+         * GetCourses(first: 3, where: {
+         *      or: [ -> || operator
+         *          {
+         *              name: {
+         *                  contains: "A"
+         *              },
+         *              subject: {
+         *                  eq: SCIENCE
+         *              }
+         *          
+         *          }
+         *      ]
+         *      
+         * }){
+         *      edges { -> courses data.
+         *          node { -> individual courses.
+         *              id
+         *              name
+         *              subject
+         *              instructor{}
+         *          }
+         *          cursor -> specify the starting of the pasination
+         *      }
+         *      pageInfo{
+         *          endCursor
+         *      }
+         *      totalCount
+         *  }
+         */
+
+        // order of the bellow attribute matter
         [UseDbContext(typeof(SchoolDBContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)] /* enable pagination */
+        [UseFiltering]
         public async Task<IQueryable<CourseType>> GetPaninatedCourses([ScopedService] SchoolDBContext contex)
         {
             var CourseDTOs = await _courseRepository.GetAllCourse();
