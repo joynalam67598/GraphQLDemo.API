@@ -1,3 +1,4 @@
+using GraphQLDemo.API.DataLoaders;
 using GraphQLDemo.API.Schema.Queries;
 using GraphQLDemo.API.Schema.Queries.Mutaions;
 using GraphQLDemo.API.Schema.Subscriptions;
@@ -50,6 +51,7 @@ namespace GraphQLDemo.API
 
             services.AddScoped<CoursesRepository>();
             services.AddScoped<InstructorRepository>();
+            services.AddScoped<InstructorDataLoader>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
