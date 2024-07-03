@@ -61,7 +61,7 @@ namespace GraphQLDemo.API.Schema.Queries
         {
             var CourseDTOs = await _courseRepository.GetAllCourse();
 
-            return CourseDTOs.Select(c => new CourseType()
+            return contex.Courses.Select(c => new CourseType()
             {
                 Id = c.Id,
                 Name = c.Name,
