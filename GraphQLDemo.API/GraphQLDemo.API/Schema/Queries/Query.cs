@@ -99,6 +99,7 @@ namespace GraphQLDemo.API.Schema.Queries
         // order of the bellow attribute matter
         [UseDbContext(typeof(SchoolDBContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)] /* enable pagination */
+        [UseProjection]
         [UseFiltering(typeof(CourseFilterType))]
         [UseSorting] // directly applied to database query.
         public async Task<IQueryable<CourseType>> GetPaninatedCourses([ScopedService] SchoolDBContext contex)
