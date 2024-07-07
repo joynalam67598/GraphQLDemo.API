@@ -41,7 +41,8 @@ namespace GraphQLDemo.API
                 .AddQueryType<Query>()
                 .AddMutationType<Mutation>()
                 .AddSubscriptionType<Subscription>()
-                .AddFiltering();                
+                .AddFiltering()
+                .AddSorting();
 
             // subscription provider -> give a place where hotchocolate can manage the event.
             services.AddInMemorySubscriptions();

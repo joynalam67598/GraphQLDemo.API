@@ -41,6 +41,7 @@ namespace GraphQLDemo.API.Schema.Queries
          */
 
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)] /* enable pagination */
+        [UseSorting]
         public async Task<IEnumerable<CourseType>> GetCourses()
         {
             var CourseDTOs = await _courseRepository.GetAllCourse();
@@ -73,7 +74,12 @@ namespace GraphQLDemo.API.Schema.Queries
          *          }
          *      ]
          *      
-         * }){
+         * },
+         *      order: {
+         *          name: ASC
+         *      }
+         * )
+         * {
          *      edges { -> courses data.
          *          node { -> individual courses.
          *              id
@@ -94,6 +100,7 @@ namespace GraphQLDemo.API.Schema.Queries
         [UseDbContext(typeof(SchoolDBContext))]
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)] /* enable pagination */
         [UseFiltering(typeof(CourseFilterType))]
+        [UseSorting] // directly applied to database query.
         public async Task<IQueryable<CourseType>> GetPaninatedCourses([ScopedService] SchoolDBContext contex)
         {
             var CourseDTOs = await _courseRepository.GetAllCourse();
