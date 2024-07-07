@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)system.codedom\7.0.0\buildTransitive\netcoreapp2.0\System.CodeDom.targets" Condition="Exists('$(NuGetPackageRoot)system.codedom\7.0.0\buildTransitive\netcoreapp2.0\System.CodeDom.targets')" />
+    <Import Project="$(NuGetPackageRoot)system.management\7.0.2\buildTransitive\netcoreapp2.0\System.Management.targets" Condition="Exists('$(NuGetPackageRoot)system.management\7.0.2\buildTransitive\netcoreapp2.0\System.Management.targets')" />
+    <Import Project="$(NuGetPackageRoot)system.collections.immutable\8.0.0\buildTransitive\netcoreapp2.0\System.Collections.Immutable.targets" Condition="Exists('$(NuGetPackageRoot)system.collections.immutable\8.0.0\buildTransitive\netcoreapp2.0\System.Collections.Immutable.targets')" />
     <Import Project="$(NuGetPackageRoot)hotchocolate.data.entityframework\12.20.0\build\HotChocolate.Data.EntityFramework.targets" Condition="Exists('$(NuGetPackageRoot)hotchocolate.data.entityframework\12.20.0\build\HotChocolate.Data.EntityFramework.targets')" />
     <Import Project="$(NuGetPackageRoot)hotchocolate.aspnetcore\12.20.0\build\HotChocolate.AspNetCore.targets" Condition="Exists('$(NuGetPackageRoot)hotchocolate.aspnetcore\12.20.0\build\HotChocolate.AspNetCore.targets')" />
   </ImportGroup>

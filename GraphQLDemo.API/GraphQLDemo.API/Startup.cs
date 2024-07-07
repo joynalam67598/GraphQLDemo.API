@@ -1,3 +1,5 @@
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using GraphQLDemo.API.DataLoaders;
 using GraphQLDemo.API.Schema.Queries;
 using GraphQLDemo.API.Schema.Queries.Mutaions;
@@ -5,12 +7,14 @@ using GraphQLDemo.API.Schema.Subscriptions;
 using GraphQLDemo.API.Services;
 using GraphQLDemo.API.Services.Courses;
 using GraphQLDemo.API.Services.Instructors;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace GraphQLDemo.API
 {
@@ -43,7 +47,31 @@ namespace GraphQLDemo.API
                 .AddSubscriptionType<Subscription>()
                 .AddFiltering()
                 .AddSorting()
-                .AddProjections();
+                .AddProjections()
+                .AddAuthorization();
+
+
+            // Initialize Firebase Admin SDK
+            FirebaseApp.Create(new AppOptions()
+            {
+                Credential = GoogleCredential.FromFile("")
+            });
+
+            /*
+             * FirebaseApp.Create: Initializes the Firebase Admin SDK with the provided credentials.
+             * The credentials JSON file is required to authenticate and interact with Firebase services.
+             */
+
+            // Configure JWT Bearer Authentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer();
+
+            /*
+             * services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme): 
+             * Registers the authentication services with JWT Bearer as the default scheme.
+             * AddJwtBearer: Configures JWT Bearer authentication with specific options:
+             * options.Authority: The URL that the JWT tokens should be validated against (Firebase project).
+             */
 
             // subscription provider -> give a place where hotchocolate can manage the event.
             services.AddInMemorySubscriptions();
@@ -67,6 +95,8 @@ namespace GraphQLDemo.API
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseWebSockets();
 
