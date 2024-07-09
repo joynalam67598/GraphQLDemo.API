@@ -1,4 +1,6 @@
 using FirebaseAdmin;
+using FirebaseAdminAuthentication.DependencyInjection;
+using FirebaseAdminAuthentication.DependencyInjection.Extensions;
 using Google.Apis.Auth.OAuth2;
 using GraphQLDemo.API.DataLoaders;
 using GraphQLDemo.API.Schema.Queries;
@@ -7,6 +9,7 @@ using GraphQLDemo.API.Schema.Subscriptions;
 using GraphQLDemo.API.Services;
 using GraphQLDemo.API.Services.Courses;
 using GraphQLDemo.API.Services.Instructors;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,11 +23,11 @@ namespace GraphQLDemo.API
 {
     public class Startup
     {
-        private readonly IConfiguration _congifuration;
+        private readonly IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)
         {
-            _congifuration = configuration;
+            _configuration = configuration;
         }
 
 
@@ -50,21 +53,18 @@ namespace GraphQLDemo.API
                 .AddProjections()
                 .AddAuthorization();
 
-
             // Initialize Firebase Admin SDK
-            FirebaseApp.Create(new AppOptions()
-            {
-                Credential = GoogleCredential.FromFile("")
-            });
-
             /*
              * FirebaseApp.Create: Initializes the Firebase Admin SDK with the provided credentials.
              * The credentials JSON file is required to authenticate and interact with Firebase services.
              */
 
             // Configure JWT Bearer Authentication
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer();
+            services.AddSingleton(FirebaseApp.Create(new AppOptions()
+            {
+                Credential = GoogleCredential.FromFile("./firebase-config.json")
+            }));
+            services.AddFirebaseAuthentication();
 
             /*
              * services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme): 
@@ -77,7 +77,7 @@ namespace GraphQLDemo.API
             services.AddInMemorySubscriptions();
 
 
-            var connectionString = _congifuration.GetConnectionString("default");
+            var connectionString = _configuration.GetConnectionString("default");
             services.AddPooledDbContextFactory<SchoolDBContext>(sbd => sbd.UseSqlite(connectionString));
 
             services.AddScoped<CoursesRepository>();
