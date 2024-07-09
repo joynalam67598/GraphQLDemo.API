@@ -37,7 +37,8 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
             {
                 Name = courseInputType.Name,
                 Subject = courseInputType.Subject,
-                InstructorId = courseInputType.InstructorId
+                InstructorId = courseInputType.InstructorId,
+                CreatedById = userId
             };
 
             courseDTO = await _coursesRepository.Create(courseDTO);
@@ -57,13 +58,24 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
             return course;
         }
 
-        public async Task<CourseResult> UpdateCourse(Guid courseId, CourseInputType courseInputType, [Service] ITopicEventSender topicEventSender)
+        [Authorize]
+        public async Task<CourseResult> UpdateCourse(Guid courseId,
+            CourseInputType courseInputType,
+            [Service] ITopicEventSender topicEventSender,
+            ClaimsPrincipal claimsPrincipal)
         {
-            var courseDTO = await _coursesRepository.GetCourseById(courseId);
+            string userId = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.ID);
+
+            var courseDTO = await _coursesRepository.GetCourseByCreatorId(userId);
 
             if (courseDTO == null)
             {
                 throw new GraphQLException(new Error("Course not found.", "COURSE_NOT_FOUND"));
+            }
+
+            if (courseDTO.CreatedById != userId)
+            {
+                throw new GraphQLException(new Error("You don't have permission to update course.", "INVALID_PERMISSION"));
             }
 
             courseDTO.Name = courseInputType.Name;
@@ -87,6 +99,8 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
             return course;
         }
 
+        // only admin can execute this method.
+        [Authorize(Policy ="IsAdmin")] // when add a policy we need to register it.
         public async Task<bool> DeleteCourse(Guid coruseId)
         {
             try
