@@ -4,14 +4,14 @@
     "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API.csproj": {}
   },
   "projects": {
-    "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API.csproj": {
+    "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\FirebaseAdminAuthentication.DependencyInjection\\FirebaseAdminAuthentication.DependencyInjection.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API.csproj",
-        "projectName": "GraphQLDemo.API",
-        "projectPath": "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API.csproj",
+        "projectUniqueName": "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\FirebaseAdminAuthentication.DependencyInjection\\FirebaseAdminAuthentication.DependencyInjection.csproj",
+        "projectName": "FirebaseAdminAuthentication.DependencyInjection",
+        "projectPath": "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\FirebaseAdminAuthentication.DependencyInjection\\FirebaseAdminAuthentication.DependencyInjection.csproj",
         "packagesPath": "C:\\Users\\Joynal\\.nuget\\packages\\",
-        "outputPath": "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\obj\\",
+        "outputPath": "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\FirebaseAdminAuthentication.DependencyInjection\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Joynal\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,17 +40,104 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "FirebaseAdmin": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication": {
+              "target": "Package",
+              "version": "[2.1.2, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[3.1.32, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API.csproj",
+        "projectName": "GraphQLDemo.API",
+        "projectPath": "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API.csproj",
+        "packagesPath": "C:\\Users\\Joynal\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Joynal\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\FirebaseAdminAuthentication.DependencyInjection\\FirebaseAdminAuthentication.DependencyInjection.csproj": {
+                "projectPath": "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\FirebaseAdminAuthentication.DependencyInjection\\FirebaseAdminAuthentication.DependencyInjection.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
             "Bogus": {
               "target": "Package",
               "version": "[35.5.1, )"
+            },
+            "FirebaseAdmin": {
+              "target": "Package",
+              "version": "[3.0.0, )"
             },
             "HotChocolate.AspNetCore": {
               "target": "Package",
               "version": "[12.20.0, )"
             },
+            "HotChocolate.AspNetCore.Authorization": {
+              "target": "Package",
+              "version": "[12.19.2, )"
+            },
             "HotChocolate.Data.EntityFramework": {
               "target": "Package",
               "version": "[12.20.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[3.1.32, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
