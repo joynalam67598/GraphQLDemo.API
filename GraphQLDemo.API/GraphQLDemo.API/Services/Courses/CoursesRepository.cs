@@ -70,5 +70,14 @@ namespace GraphQLDemo.API.Services.Courses
                 return await contex.SaveChangesAsync() > 0;
             }
         }
+
+        public async Task<CourseDTO> GetCourseByCreatorId(string userId)
+        {
+            using (SchoolDBContext contex = _dBContexFactory.CreateDbContext())
+            {
+                return await contex.Courses
+                    .FirstOrDefaultAsync(c => c.CreatedById == userId);
+            }
+        }
     }
 }

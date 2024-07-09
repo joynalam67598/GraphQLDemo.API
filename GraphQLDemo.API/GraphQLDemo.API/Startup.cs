@@ -1,6 +1,7 @@
 using FirebaseAdmin;
 using FirebaseAdminAuthentication.DependencyInjection;
 using FirebaseAdminAuthentication.DependencyInjection.Extensions;
+using FirebaseAdminAuthentication.DependencyInjection.Models;
 using Google.Apis.Auth.OAuth2;
 using GraphQLDemo.API.DataLoaders;
 using GraphQLDemo.API.Schema.Queries;
@@ -9,15 +10,12 @@ using GraphQLDemo.API.Schema.Subscriptions;
 using GraphQLDemo.API.Services;
 using GraphQLDemo.API.Services.Courses;
 using GraphQLDemo.API.Services.Instructors;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 
 namespace GraphQLDemo.API
 {
@@ -66,6 +64,8 @@ namespace GraphQLDemo.API
             }));
             services.AddFirebaseAuthentication();
 
+            services.AddAuthorization(o => o.AddPolicy("IsAdmin", p => p.RequireClaim(FirebaseUserClaimType.EMAIL, "joynal@gmail.com")));
+
             /*
              * services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme): 
              * Registers the authentication services with JWT Bearer as the default scheme.
@@ -97,6 +97,8 @@ namespace GraphQLDemo.API
             app.UseRouting();
 
             app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseWebSockets();
 
