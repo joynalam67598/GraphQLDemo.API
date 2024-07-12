@@ -42,21 +42,14 @@ namespace GraphQLDemo.API.Schema.Queries
         [IsProjected(true)]
         public string CreatedById { get; set; }
 
-        public async Task<UserType> CreatedBy()
+        public async Task<UserType> CreatedBy([Service] UserDataLoader userDataLoader)
         {
             if (CreatedById == null)
             {
                 return null;
             }
 
-            UserRecord user = await FirebaseAuth.DefaultInstance.GetUserAsync(CreatedById);
-
-            return new UserType()
-            {
-                Id = CreatedById,
-                UserName = user.DisplayName,
-                PhotoUrl = user.PhotoUrl
-            };
+            return await userDataLoader.LoadAsync(CreatedById, CancellationToken.None);
         }
     }
 }
