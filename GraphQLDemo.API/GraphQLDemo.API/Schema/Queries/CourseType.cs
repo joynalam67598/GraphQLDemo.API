@@ -38,5 +38,12 @@ namespace GraphQLDemo.API.Schema.Queries
         {
             return $"{Name}: This is a course.";
         }
+        [IsProjected(true)]
+        public string CreatedById { get; set; }
+
+        public UserType CreatedBy
+        {
+            return 
+        }
     }
 }

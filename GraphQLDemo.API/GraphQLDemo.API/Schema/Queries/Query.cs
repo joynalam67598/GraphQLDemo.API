@@ -21,40 +21,6 @@ namespace GraphQLDemo.API.Schema.Queries
             _courseRepository = courseRepository;
         }
         
-        /*pagination query
-         * 
-         * GetCourses(first: 3, after: -> weher we want to start, before: -> until){
-         *      edges { -> courses data.
-         *          node { -> individual courses.
-         *              id
-         *              name
-         *              subject
-         *              instructor{}
-         *          }
-         *          cursor -> specify the starting of the pasination
-         *      }
-         *      pageInfo{
-         *          endCursor
-         *      }
-         *      totalCount
-         *  }
-         */
-
-        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)] /* enable pagination */
-        [UseSorting]
-        public async Task<IEnumerable<CourseType>> GetCourses()
-        {
-            var CourseDTOs = await _courseRepository.GetAllCourse();
-
-            return CourseDTOs.Select(c => new CourseType()
-            {
-                Id = c.Id,
-                Name = c.Name,
-                Subject = c.Subject,
-                InstructorId = c.InstructorId
-            });
-        }
-
         // apply pagination in db query. for this we don't need to pass the size to repository to use in take()
         // if we return querible to hotchocolate it do this for us.
 
@@ -102,7 +68,7 @@ namespace GraphQLDemo.API.Schema.Queries
         [UseProjection]
         [UseFiltering(typeof(CourseFilterType))]
         [UseSorting] // directly applied to database query.
-        public async Task<IQueryable<CourseType>> GetPaninatedCourses([ScopedService] SchoolDBContext contex)
+        public async Task<IQueryable<CourseType>> GetPaginatedCourses([ScopedService] SchoolDBContext contex)
         {
             var CourseDTOs = await _courseRepository.GetAllCourse();
 
@@ -111,7 +77,8 @@ namespace GraphQLDemo.API.Schema.Queries
                 Id = c.Id,
                 Name = c.Name,
                 Subject = c.Subject,
-                InstructorId = c.InstructorId
+                InstructorId = c.InstructorId,
+                CreatedById = c.CreatedById
             });
         }
 
