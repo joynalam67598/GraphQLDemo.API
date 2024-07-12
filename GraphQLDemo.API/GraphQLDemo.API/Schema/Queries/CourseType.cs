@@ -1,4 +1,5 @@
-﻿using GraphQLDemo.API.DataLoaders;
+﻿using FirebaseAdmin.Auth;
+using GraphQLDemo.API.DataLoaders;
 using GraphQLDemo.API.Models;
 using GraphQLDemo.API.Services.Instructors;
 using HotChocolate;
@@ -41,9 +42,21 @@ namespace GraphQLDemo.API.Schema.Queries
         [IsProjected(true)]
         public string CreatedById { get; set; }
 
-        public UserType CreatedBy
+        public async Task<UserType> CreatedBy()
         {
-            return 
+            if (CreatedById == null)
+            {
+                return null;
+            }
+
+            UserRecord user = await FirebaseAuth.DefaultInstance.GetUserAsync(CreatedById);
+
+            return new UserType()
+            {
+                Id = CreatedById,
+                UserName = user.DisplayName,
+                PhotoUrl = user.PhotoUrl
+            };
         }
     }
 }
