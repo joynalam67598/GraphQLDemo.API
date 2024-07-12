@@ -93,8 +93,8 @@ namespace GraphQLDemo.API.Schema.Queries
                 Id = courseDTO.Id,
                 Name = courseDTO.Name,
                 Subject = courseDTO.Subject,
-                InstructorId = courseDTO.InstructorId
-                
+                InstructorId = courseDTO.InstructorId,
+                CreatedById = courseDTO.CreatedById
             };
         }
 
