@@ -83,6 +83,7 @@ namespace GraphQLDemo.API
             services.AddScoped<CoursesRepository>();
             services.AddScoped<InstructorRepository>();
             services.AddScoped<InstructorDataLoader>();
+            services.AddScoped<UserDataLoader>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

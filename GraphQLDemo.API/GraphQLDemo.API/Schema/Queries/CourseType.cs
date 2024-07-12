@@ -1,4 +1,5 @@
-﻿using GraphQLDemo.API.DataLoaders;
+﻿using FirebaseAdmin.Auth;
+using GraphQLDemo.API.DataLoaders;
 using GraphQLDemo.API.Models;
 using GraphQLDemo.API.Services.Instructors;
 using HotChocolate;
@@ -37,6 +38,18 @@ namespace GraphQLDemo.API.Schema.Queries
         public string Description()
         {
             return $"{Name}: This is a course.";
+        }
+        [IsProjected(true)]
+        public string CreatedById { get; set; }
+
+        public async Task<UserType> CreatedBy([Service] UserDataLoader userDataLoader)
+        {
+            if (CreatedById == null)
+            {
+                return null;
+            }
+
+            return await userDataLoader.LoadAsync(CreatedById, CancellationToken.None);
         }
     }
 }
