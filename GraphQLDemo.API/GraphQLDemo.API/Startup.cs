@@ -48,6 +48,7 @@ namespace GraphQLDemo.API
                 .AddSubscriptionType<Subscription>()
                 .AddType<CourseType>()
                 .AddType<InstructorType>()
+                .AddType<CourseQuery>()
                 .AddFiltering()
                 .AddSorting()
                 .AddProjections()
