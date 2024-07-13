@@ -31,9 +31,9 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
         public async Task<CourseResult> CreateCourse(
             [UseFluentValidation]CourseInputType courseInputType,
             [Service] ITopicEventSender topicEventSender,
-            ClaimsPrincipal claimsPrincipal)
+            [User] User user)
         {
-            string userId = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.ID);
+            string userId = user.Id;
 
             CourseDTO courseDTO = new CourseDTO()
             {
@@ -61,10 +61,11 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
         }
 
         [Authorize]
+        [UserUser]
         public async Task<CourseResult> UpdateCourse(Guid courseId,
             [UseFluentValidation] CourseInputType courseInputType,
             [Service] ITopicEventSender topicEventSender,
-            [GlobalState("User")] User user)
+            [User] User user)
         {
             string userId = user.Id;
 

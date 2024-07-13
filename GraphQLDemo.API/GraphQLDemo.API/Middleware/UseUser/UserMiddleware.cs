@@ -8,6 +8,7 @@ namespace GraphQLDemo.API.Middleware.UseUser
 {
     public class UserMiddleware
     {
+        public const string USER_CONTEXT_DATA_KEY = "User";
         private readonly FieldDelegate _next;
 
         public UserMiddleware(FieldDelegate next)
@@ -31,7 +32,7 @@ namespace GraphQLDemo.API.Middleware.UseUser
                     EmailVerified = emailVerified,
                 };
 
-                context.ContextData.Add("User", user);
+                context.ContextData.Add(USER_CONTEXT_DATA_KEY, user);
             }
 
             await _next(context);
