@@ -1,15 +1,15 @@
-﻿using FirebaseAdminAuthentication.DependencyInjection.Models;
+﻿using AppAny.HotChocolate.FluentValidation;
+using FirebaseAdminAuthentication.DependencyInjection.Models;
+using FluentValidation.Results;
 using GraphQLDemo.API.DTOs;
-using GraphQLDemo.API.Models;
 using GraphQLDemo.API.Schema.Mutaions;
 using GraphQLDemo.API.Schema.Subscriptions;
 using GraphQLDemo.API.Services.Courses;
+using GraphQLDemo.API.Validators;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Subscriptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -24,14 +24,13 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
             _coursesRepository = coursesRepository;
         }
 
-        [Authorize] /**/
-        public async Task<CourseResult> CreateCourse(CourseInputType courseInputType, [Service] ITopicEventSender topicEventSender,
+        [Authorize]
+        public async Task<CourseResult> CreateCourse(
+            [UseFluentValidation]CourseInputType courseInputType,
+            [Service] ITopicEventSender topicEventSender,
             ClaimsPrincipal claimsPrincipal)
         {
             string userId = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.ID);
-            string email = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.EMAIL);
-            string username = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.USERNAME);
-            string verified = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.EMAIL_VERIFIED);
 
             CourseDTO courseDTO = new CourseDTO()
             {
@@ -60,7 +59,7 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
 
         [Authorize]
         public async Task<CourseResult> UpdateCourse(Guid courseId,
-            CourseInputType courseInputType,
+            [UseFluentValidation] CourseInputType courseInputType,
             [Service] ITopicEventSender topicEventSender,
             ClaimsPrincipal claimsPrincipal)
         {
@@ -99,8 +98,7 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
             return course;
         }
 
-        // only admin can execute this method.
-        [Authorize(Policy ="IsAdmin")] // when add a policy we need to register it.
+        [Authorize(Policy ="IsAdmin")]
         public async Task<bool> DeleteCourse(Guid coruseId)
         {
             try
@@ -112,6 +110,5 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
                 return false;
             }            
         }
-
     }
 }

@@ -115,6 +115,10 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "AppAny.HotChocolate.FluentValidation": {
+              "target": "Package",
+              "version": "[0.9.0, )"
+            },
             "Bogus": {
               "target": "Package",
               "version": "[35.5.1, )"
@@ -122,6 +126,14 @@
             "FirebaseAdmin": {
               "target": "Package",
               "version": "[3.0.0, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.9.2, )"
+            },
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[11.3.0, )"
             },
             "HotChocolate.AspNetCore": {
               "target": "Package",
