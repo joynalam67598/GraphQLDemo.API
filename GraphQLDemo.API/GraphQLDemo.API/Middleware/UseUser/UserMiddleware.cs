@@ -27,10 +27,13 @@ namespace GraphQLDemo.API.Middleware.UseUser
                 {
                     Id = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.ID),
                     UserName = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.USERNAME),
-                    Email = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.Email),
+                    Email = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.EMAIL),
                     EmailVerified = emailVerified,
-                }
+                };
+
+                context.ContextData.Add("User", user);
             }
+
             await _next(context);
         }
     }
