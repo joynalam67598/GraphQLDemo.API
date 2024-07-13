@@ -1,4 +1,5 @@
 ﻿using HotChocolate.Resolvers;
+using System.Threading.Tasks;
 
 namespace GraphQLDemo.API.Middleware.UseUser
 {
@@ -11,9 +12,9 @@ namespace GraphQLDemo.API.Middleware.UseUser
             _next = next;
         }
 
-        public void Invoike(IMiddlewareContext context)
+        public async Task Invoke(IMiddlewareContext context)
         {
-            _next(context);
+            await _next(context);
         }
     }
 }

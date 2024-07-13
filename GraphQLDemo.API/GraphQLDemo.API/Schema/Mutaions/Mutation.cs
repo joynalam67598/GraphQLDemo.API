@@ -2,6 +2,7 @@
 using FirebaseAdminAuthentication.DependencyInjection.Models;
 using FluentValidation.Results;
 using GraphQLDemo.API.DTOs;
+using GraphQLDemo.API.Middleware.UseUser;
 using GraphQLDemo.API.Schema.Mutaions;
 using GraphQLDemo.API.Schema.Subscriptions;
 using GraphQLDemo.API.Services.Courses;
@@ -25,6 +26,7 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
         }
 
         [Authorize]
+        [UserUser]
         public async Task<CourseResult> CreateCourse(
             [UseFluentValidation]CourseInputType courseInputType,
             [Service] ITopicEventSender topicEventSender,
