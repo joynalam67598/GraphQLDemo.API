@@ -31,9 +31,6 @@ namespace GraphQLDemo.API
             _configuration = configuration;
         }
 
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddFluentValidation();
@@ -55,13 +52,6 @@ namespace GraphQLDemo.API
                     o.UseDefaultErrorMapper();
                 });
 
-            // Initialize Firebase Admin SDK
-            /*
-             * FirebaseApp.Create: Initializes the Firebase Admin SDK with the provided credentials.
-             * The credentials JSON file is required to authenticate and interact with Firebase services.
-             */
-
-            // Configure JWT Bearer Authentication
             services.AddSingleton(FirebaseApp.Create(new AppOptions()
             {
                 Credential = GoogleCredential.FromFile("./firebase-config.json")
@@ -70,14 +60,6 @@ namespace GraphQLDemo.API
 
             services.AddAuthorization(o => o.AddPolicy("IsAdmin", p => p.RequireClaim(FirebaseUserClaimType.EMAIL, "joynal@gmail.com")));
 
-            /*
-             * services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme): 
-             * Registers the authentication services with JWT Bearer as the default scheme.
-             * AddJwtBearer: Configures JWT Bearer authentication with specific options:
-             * options.Authority: The URL that the JWT tokens should be validated against (Firebase project).
-             */
-
-            // subscription provider -> give a place where hotchocolate can manage the event.
             services.AddInMemorySubscriptions();
 
 
@@ -90,7 +72,6 @@ namespace GraphQLDemo.API
             services.AddScoped<UserDataLoader>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 

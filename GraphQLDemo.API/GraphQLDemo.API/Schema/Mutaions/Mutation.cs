@@ -2,6 +2,8 @@
 using FirebaseAdminAuthentication.DependencyInjection.Models;
 using FluentValidation.Results;
 using GraphQLDemo.API.DTOs;
+using GraphQLDemo.API.Middleware.UseUser;
+using GraphQLDemo.API.Models;
 using GraphQLDemo.API.Schema.Mutaions;
 using GraphQLDemo.API.Schema.Subscriptions;
 using GraphQLDemo.API.Services.Courses;
@@ -25,12 +27,13 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
         }
 
         [Authorize]
+        [UserUser]
         public async Task<CourseResult> CreateCourse(
             [UseFluentValidation]CourseInputType courseInputType,
             [Service] ITopicEventSender topicEventSender,
-            ClaimsPrincipal claimsPrincipal)
+            [User] User user)
         {
-            string userId = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.ID);
+            string userId = user.Id;
 
             CourseDTO courseDTO = new CourseDTO()
             {
@@ -58,12 +61,13 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
         }
 
         [Authorize]
+        [UserUser]
         public async Task<CourseResult> UpdateCourse(Guid courseId,
             [UseFluentValidation] CourseInputType courseInputType,
             [Service] ITopicEventSender topicEventSender,
-            ClaimsPrincipal claimsPrincipal)
+            [User] User user)
         {
-            string userId = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.ID);
+            string userId = user.Id;
 
             var courseDTO = await _coursesRepository.GetCourseByCreatorId(userId);
 
