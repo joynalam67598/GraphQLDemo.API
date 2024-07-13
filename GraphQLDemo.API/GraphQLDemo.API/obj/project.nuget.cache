@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "1uUMZune6kAZTxb8olMpZBBwjKV9s3UjQIQSSd8K3ns0SzKHh2LmGKzNTYo94wyE3lS5LtDtOwIzwjUFsyUR0A==",
+  "dgSpecHash": "JhixeaLRSo3xSRZkvjFjL0XBeH8IMe+C6JLTplczKcyX+pu9aJpNro7aQIRhj57tPT9NlFVv0ktAjsN/wXOjwA==",
   "success": true,
   "projectFilePath": "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Joynal\\.nuget\\packages\\bogus\\35.5.1\\bogus.35.5.1.nupkg.sha512",
     "C:\\Users\\Joynal\\.nuget\\packages\\firebaseadmin\\3.0.0\\firebaseadmin.3.0.0.nupkg.sha512",
+    "C:\\Users\\Joynal\\.nuget\\packages\\fluentvalidation\\11.9.2\\fluentvalidation.11.9.2.nupkg.sha512",
+    "C:\\Users\\Joynal\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.0\\fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "C:\\Users\\Joynal\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.5.1\\fluentvalidation.dependencyinjectionextensions.11.5.1.nupkg.sha512",
     "C:\\Users\\Joynal\\.nuget\\packages\\google.api.gax\\4.8.0\\google.api.gax.4.8.0.nupkg.sha512",
     "C:\\Users\\Joynal\\.nuget\\packages\\google.api.gax.rest\\4.8.0\\google.api.gax.rest.4.8.0.nupkg.sha512",
     "C:\\Users\\Joynal\\.nuget\\packages\\google.apis\\1.67.0\\google.apis.1.67.0.nupkg.sha512",

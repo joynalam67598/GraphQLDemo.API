@@ -2,6 +2,7 @@ using FirebaseAdmin;
 using FirebaseAdminAuthentication.DependencyInjection;
 using FirebaseAdminAuthentication.DependencyInjection.Extensions;
 using FirebaseAdminAuthentication.DependencyInjection.Models;
+using FluentValidation.AspNetCore;
 using Google.Apis.Auth.OAuth2;
 using GraphQLDemo.API.DataLoaders;
 using GraphQLDemo.API.Schema.Queries;
@@ -10,6 +11,7 @@ using GraphQLDemo.API.Schema.Subscriptions;
 using GraphQLDemo.API.Services;
 using GraphQLDemo.API.Services.Courses;
 using GraphQLDemo.API.Services.Instructors;
+using GraphQLDemo.API.Validators;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -33,14 +35,8 @@ namespace GraphQLDemo.API
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            // Problem after installing updated version of HotChocolate.AspNetCore
-            // -> AddGraphQLServer is not available in the services
-
-            // Probable Solution 
-
-
-            // if AddGraphQLServer is not available after installing updated version of the package then see which
-            // version of the package support the dot net verstion you are using.
+            services.AddFluentValidation();
+            services.AddTransient<CourseTypeInputValidator>();
 
             services.AddGraphQLServer()
                 .AddQueryType<Query>()

@@ -1,15 +1,14 @@
 ﻿using FirebaseAdminAuthentication.DependencyInjection.Models;
+using FluentValidation.Results;
 using GraphQLDemo.API.DTOs;
-using GraphQLDemo.API.Models;
 using GraphQLDemo.API.Schema.Mutaions;
 using GraphQLDemo.API.Schema.Subscriptions;
 using GraphQLDemo.API.Services.Courses;
+using GraphQLDemo.API.Validators;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Subscriptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -18,20 +17,23 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
     public class Mutation
     {
         private readonly CoursesRepository _coursesRepository;
+        private readonly CourseTypeInputValidator _courseTypeInputValidator;
 
-        public Mutation(CoursesRepository coursesRepository)
+        public Mutation(CoursesRepository coursesRepository, CourseTypeInputValidator courseTypeInputValidator)
         {
             _coursesRepository = coursesRepository;
+            _courseTypeInputValidator = courseTypeInputValidator;
         }
 
-        [Authorize] /**/
-        public async Task<CourseResult> CreateCourse(CourseInputType courseInputType, [Service] ITopicEventSender topicEventSender,
+        [Authorize]
+        public async Task<CourseResult> CreateCourse(
+            CourseInputType courseInputType,
+            [Service] ITopicEventSender topicEventSender,
             ClaimsPrincipal claimsPrincipal)
         {
+            Validate(courseInputType);
+
             string userId = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.ID);
-            string email = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.EMAIL);
-            string username = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.USERNAME);
-            string verified = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.EMAIL_VERIFIED);
 
             CourseDTO courseDTO = new CourseDTO()
             {
@@ -64,6 +66,8 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
             [Service] ITopicEventSender topicEventSender,
             ClaimsPrincipal claimsPrincipal)
         {
+            Validate(courseInputType);            
+
             string userId = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.ID);
 
             var courseDTO = await _coursesRepository.GetCourseByCreatorId(userId);
@@ -99,8 +103,17 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
             return course;
         }
 
-        // only admin can execute this method.
-        [Authorize(Policy ="IsAdmin")] // when add a policy we need to register it.
+        public void Validate(CourseInputType courseInputType)
+        {
+            ValidationResult validationResult = _courseTypeInputValidator.Validate(courseInputType);
+
+            if (!validationResult.IsValid)
+            {
+                throw new GraphQLException("Invalid Input");
+            }
+        }
+
+        [Authorize(Policy ="IsAdmin")]
         public async Task<bool> DeleteCourse(Guid coruseId)
         {
             try
@@ -112,6 +125,5 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
                 return false;
             }            
         }
-
     }
 }
