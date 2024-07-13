@@ -1,4 +1,5 @@
-﻿using FirebaseAdminAuthentication.DependencyInjection.Models;
+﻿using AppAny.HotChocolate.FluentValidation;
+using FirebaseAdminAuthentication.DependencyInjection.Models;
 using FluentValidation.Results;
 using GraphQLDemo.API.DTOs;
 using GraphQLDemo.API.Schema.Mutaions;
@@ -17,22 +18,18 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
     public class Mutation
     {
         private readonly CoursesRepository _coursesRepository;
-        private readonly CourseTypeInputValidator _courseTypeInputValidator;
 
-        public Mutation(CoursesRepository coursesRepository, CourseTypeInputValidator courseTypeInputValidator)
+        public Mutation(CoursesRepository coursesRepository)
         {
             _coursesRepository = coursesRepository;
-            _courseTypeInputValidator = courseTypeInputValidator;
         }
 
         [Authorize]
         public async Task<CourseResult> CreateCourse(
-            CourseInputType courseInputType,
+            [UseFluentValidation]CourseInputType courseInputType,
             [Service] ITopicEventSender topicEventSender,
             ClaimsPrincipal claimsPrincipal)
         {
-            Validate(courseInputType);
-
             string userId = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.ID);
 
             CourseDTO courseDTO = new CourseDTO()
@@ -62,12 +59,10 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
 
         [Authorize]
         public async Task<CourseResult> UpdateCourse(Guid courseId,
-            CourseInputType courseInputType,
+            [UseFluentValidation] CourseInputType courseInputType,
             [Service] ITopicEventSender topicEventSender,
             ClaimsPrincipal claimsPrincipal)
         {
-            Validate(courseInputType);            
-
             string userId = claimsPrincipal.FindFirstValue(FirebaseUserClaimType.ID);
 
             var courseDTO = await _coursesRepository.GetCourseByCreatorId(userId);
@@ -101,16 +96,6 @@ namespace GraphQLDemo.API.Schema.Queries.Mutaions
             await topicEventSender.SendAsync(nameof(updatedCourseTopic), course);
 
             return course;
-        }
-
-        public void Validate(CourseInputType courseInputType)
-        {
-            ValidationResult validationResult = _courseTypeInputValidator.Validate(courseInputType);
-
-            if (!validationResult.IsValid)
-            {
-                throw new GraphQLException("Invalid Input");
-            }
         }
 
         [Authorize(Policy ="IsAdmin")]

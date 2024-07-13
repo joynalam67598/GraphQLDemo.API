@@ -1,3 +1,4 @@
+using AppAny.HotChocolate.FluentValidation;
 using FirebaseAdmin;
 using FirebaseAdminAuthentication.DependencyInjection;
 using FirebaseAdminAuthentication.DependencyInjection.Extensions;
@@ -48,7 +49,11 @@ namespace GraphQLDemo.API
                 .AddFiltering()
                 .AddSorting()
                 .AddProjections()
-                .AddAuthorization();
+                .AddAuthorization()
+                .AddFluentValidation(o =>
+                {
+                    o.UseDefaultErrorMapper();
+                });
 
             // Initialize Firebase Admin SDK
             /*

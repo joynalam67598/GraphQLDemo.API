@@ -115,6 +115,10 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "AppAny.HotChocolate.FluentValidation": {
+              "target": "Package",
+              "version": "[0.9.0, )"
+            },
             "Bogus": {
               "target": "Package",
               "version": "[35.5.1, )"

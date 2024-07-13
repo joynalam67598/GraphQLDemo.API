@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "JhixeaLRSo3xSRZkvjFjL0XBeH8IMe+C6JLTplczKcyX+pu9aJpNro7aQIRhj57tPT9NlFVv0ktAjsN/wXOjwA==",
+  "dgSpecHash": "F9Zw2f3co2XJCrtFvTtGvJjDx5zmKZLVr9sJkhuymLRQFkpJ1ISWut33nSqKLJcaJsaKPBS3BKsUne9kyEZ+wQ==",
   "success": true,
   "projectFilePath": "D:\\Project\\Dotnet\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API\\GraphQLDemo.API.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Joynal\\.nuget\\packages\\appany.hotchocolate.fluentvalidation\\0.9.0\\appany.hotchocolate.fluentvalidation.0.9.0.nupkg.sha512",
     "C:\\Users\\Joynal\\.nuget\\packages\\bogus\\35.5.1\\bogus.35.5.1.nupkg.sha512",
     "C:\\Users\\Joynal\\.nuget\\packages\\firebaseadmin\\3.0.0\\firebaseadmin.3.0.0.nupkg.sha512",
     "C:\\Users\\Joynal\\.nuget\\packages\\fluentvalidation\\11.9.2\\fluentvalidation.11.9.2.nupkg.sha512",
