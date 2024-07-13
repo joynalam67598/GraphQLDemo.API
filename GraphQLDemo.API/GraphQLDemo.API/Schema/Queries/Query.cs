@@ -99,8 +99,23 @@ namespace GraphQLDemo.API.Schema.Queries
 
         /*
          * Query:
-         * {
-         * }
+         * 1.
+         {
+            search(term: "jhon"){
+              id
+              ... on InstructorType{
+                firstName
+                lastName
+                salary
+              }
+              ... on CourseType{
+                name
+              }
+            }
+        }
+
+        2.
+
         */
 
 
