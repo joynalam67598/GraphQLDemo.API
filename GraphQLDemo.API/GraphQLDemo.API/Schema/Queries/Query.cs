@@ -6,6 +6,7 @@ using GraphQLDemo.API.Services.Courses;
 using HotChocolate;
 using HotChocolate.Data;
 using HotChocolate.Types;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,6 @@ namespace GraphQLDemo.API.Schema.Queries
         
         // apply pagination in db query. for this we don't need to pass the size to repository to use in take()
         // if we return querible to hotchocolate it do this for us.
-
 
         /* filtering query
          * 
@@ -82,8 +82,6 @@ namespace GraphQLDemo.API.Schema.Queries
             });
         }
 
-
-
         // Resolver
         public async Task<CourseType> GetCourseByIdAsync (Guid id)
         {
@@ -98,6 +96,42 @@ namespace GraphQLDemo.API.Schema.Queries
             };
         }
 
+
+        /*
+         * Query:
+         * {
+         * }
+        */
+
+
+        // might return course type or instructor type.
+        public async Task<IEnumerable<ISearchResultType>> Search(string term, [ScopedService] SchoolDBContext context)
+        {
+            IEnumerable<CourseType> courses = await context.Courses
+                .Where(c => c.Name.ToLower().Contains(term.ToLower()))
+                .Select(c => new CourseType()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Subject = c.Subject,
+                    InstructorId = c.InstructorId,
+                    CreatedById = c.CreatedById
+                }).ToListAsync();
+
+            IEnumerable<InstructorType> instructors = await context.Instructors
+                .Where(c => c.FirstName.ToLower().Contains(term.ToLower()) || c.LastName.ToLower().Contains(term.ToLower()))
+                .Select(c => new InstructorType()
+                {
+                    Id = c.Id,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    Salary = c.Salary
+                }).ToListAsync();
+
+            return new List<ISearchResultType>()
+                .Concat(courses)
+                .Concat(instructors);
+        }
 
         [GraphQLDeprecated("This query is deprecated.")]
         public string Instructions => "Query Type.";

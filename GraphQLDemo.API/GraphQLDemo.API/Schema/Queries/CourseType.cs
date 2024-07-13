@@ -13,7 +13,7 @@ namespace GraphQLDemo.API.Schema.Queries
 {
     
 
-    public class CourseType
+    public class CourseType : ISearchResultType
     {        
         public Guid Id { get; set; }
         [IsProjected(false)] // it will note select Name from db, even if we query for this.
